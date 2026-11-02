@@ -150,15 +150,15 @@ public class EventsListingMapper extends ModuleMapper<EventsListing, EventsLings
 
     private void addBooleanFields(List<EventFilter> filters, boolean inPerson, boolean national) {
 
-        filters.add(buildBooleanField(FREE_PARAM, FREE_LABEL, BOOLEAN_GROUP));
-        filters.add(buildBooleanField(ONLINE_PARAM, ONLINE_LABEL, BOOLEAN_GROUP));
+        filters.add(buildBooleanField(FREE_PARAM, FREE_LABEL));
+        filters.add(buildBooleanField(ONLINE_PARAM, ONLINE_LABEL));
 
         if (inPerson) {
-            filters.add(buildBooleanField(IN_PERSON_PARAM, IN_PERSON_LABEL, BOOLEAN_GROUP));
+            filters.add(buildBooleanField(IN_PERSON_PARAM, IN_PERSON_LABEL));
         }
         if (national) {
-            filters.add(buildBooleanField(NATIONAL_PARAM, NATIONAL_LABEL,2));
-            filters.add(buildBooleanField(INTERNATIONAL_PARAM, INTERNATIONAL_LABEL,2));
+            filters.add(buildBooleanField(NATIONAL_PARAM, NATIONAL_LABEL));
+            filters.add(buildBooleanField(INTERNATIONAL_PARAM, INTERNATIONAL_LABEL));
         }
     }
 
@@ -177,8 +177,8 @@ public class EventsListingMapper extends ModuleMapper<EventsListing, EventsLings
     /**
      * Create an EventFilter for a checkbox field
      */
-    private EventFilter buildBooleanField(String key, String labelKey, int group) {
-        return new EventFilter(key, getLabel(labelKey), EventFilter.Type.BOOLEAN, group);
+    private EventFilter buildBooleanField(String key, String labelKey) {
+        return new EventFilter(key, getLabel(labelKey), EventFilter.Type.BOOLEAN, BOOLEAN_GROUP);
     }
 
     /**
