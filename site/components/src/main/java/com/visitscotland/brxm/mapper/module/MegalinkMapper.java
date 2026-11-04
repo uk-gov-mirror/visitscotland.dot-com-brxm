@@ -28,9 +28,7 @@ public class MegalinkMapper extends ModuleMapper<Megalinks, LinksModule<Enhanced
         HORIZONTAL_LINKS("Horizontal Links"),
         LIST_LAYOUT("List"),
         DEFAULT("Default"),
-        GRID("Grid"),
-        GRID_3("Grid 3"),
-        GRID_4("Grid 4");
+        GRID("Grid");
 
         private static final Map<String, MegalinkLayout> BY_VALUE =
                 Arrays.stream(values()).collect(Collectors.toMap(MegalinkLayout::getValue, e -> e));
@@ -47,10 +45,6 @@ public class MegalinkMapper extends ModuleMapper<Megalinks, LinksModule<Enhanced
 
         public static Optional<MegalinkLayout> fromValue(String value) { return Optional.ofNullable(BY_VALUE.get(value)); }
 
-        @Deprecated(since = "2.12.0")
-        public static boolean isCardGroup(MegalinkLayout layout) {
-            return GRID_3 == layout || GRID_4 == layout || GRID == layout ;
-        }
     }
 
     private static final Logger logger = LoggerFactory.getLogger(MegalinkMapper.class);
@@ -150,7 +144,7 @@ public class MegalinkMapper extends ModuleMapper<Megalinks, LinksModule<Enhanced
             logger.warn("The Megalinks layout hasn't been set for {}", doc.getPath());
         }
 
-        if (MegalinkLayout.isCardGroup(layout)) {
+        if (MegalinkLayout.GRID == layout) {
             return getCardGroupModule(doc, locale, layout);
         } else if (layout == MegalinkLayout.HORIZONTAL_LINKS) {
             if (doc.getMegalinkItems().size() >= MIN_ITEMS_CAROUSEL) {
@@ -169,15 +163,10 @@ public class MegalinkMapper extends ModuleMapper<Megalinks, LinksModule<Enhanced
 
     public LinksModule<EnhancedLink> getCardGroupModule(Megalinks doc, Locale locale, MegalinkLayout layout) {
 
-        if (layout != MegalinkLayout.GRID) {
-            //TODO: This if block can be removed after version 2.12.0
-            return buildCardGroupModule(doc, locale, MegalinkLayout.fromValue(doc.getLayout()).orElseThrow());
-        } else if (doc.getMegalinkItems().size() > 4) {
+       if (doc.getMegalinkItems().size() > 4) {
             return buildCardGroupModule(doc, locale, MegalinkLayout.HORIZONTAL_LINKS);
-        } else if (doc.getMegalinkItems().size() == 4) {
-            return buildCardGroupModule(doc, locale, MegalinkLayout.GRID_4);
         } else {
-            CardGroupModule module = buildCardGroupModule(doc, locale, MegalinkLayout.GRID_3);
+            CardGroupModule module = buildCardGroupModule(doc, locale, MegalinkLayout.GRID);
             if (doc.getMegalinkItems().size() < 3) {
                 contentLogger.warn("The Megalinks document located at {} has less than 3 items", doc.getPath());
             }
