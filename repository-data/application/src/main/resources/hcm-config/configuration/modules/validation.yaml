@@ -167,3 +167,11 @@ definitions:
     /hippo:configuration/hippo:modules/validation/hippo:moduleconfig/visitscotland:media-collection-validator:
       jcr:primaryType: hipposys:moduleconfig
       hipposys:className: com.visitscotland.brxm.validator.MediaCollectionValidator
+    /hippo:configuration/hippo:modules/validation/hippo:moduleconfig/visitscotland:destination-highligths-validator:
+      jcr:primaryType: hipposys:moduleconfig
+      hipposys:className: com.visitscotland.brxm.validator.UniqueLinksValidator
+      linkIdField: visitscotland:category
+      targetField: visitscotland:highlights
+    /hippo:configuration/hippo:modules/validation/hippo:moduleconfig/visitscotland:provider-name-validator:
+      jcr:primaryType: hipposys:moduleconfig
+      hipposys:className: com.visitscotland.brxm.validator.ProviderNameValidator
