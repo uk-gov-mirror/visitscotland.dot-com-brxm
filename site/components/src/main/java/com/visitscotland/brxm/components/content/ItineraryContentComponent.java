@@ -16,7 +16,7 @@ public class ItineraryContentComponent extends PageContentComponent<Itinerary> {
     private static final Logger logger = LoggerFactory.getLogger(ItineraryContentComponent.class);
 
     public static final String ITINERARY_BUNDLE = "itinerary";
-    public static final String PAGE_INTRO = "pageIntro";
+    public static final String PAGE_TEMPLATE = "pageTemplate";
     public static final String HAS_STOPS = "hasStops";
 
     private final ItineraryMapper itineraryMapper;
@@ -42,7 +42,7 @@ public class ItineraryContentComponent extends PageContentComponent<Itinerary> {
         includeLabels(pageConfig);
         pageConfig.addProperty(HAS_STOPS, false);
         ItineraryPage itinerary = itineraryMapper.buildItinerary(getDocument(request), request.getLocale());
-        request.setModel(PAGE_INTRO, itinerary);
+        request.setModel(PAGE_TEMPLATE, itinerary);
         builder.addModules(request, pageConfig);
     }
 
