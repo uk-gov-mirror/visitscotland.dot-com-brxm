@@ -1,0 +1,26 @@
+definitions:
+  config:
+    /hippo:namespaces/traveltrade/basedocument:
+      jcr:primaryType: hipposysedit:templatetype
+      jcr:mixinTypes: ['mix:referenceable']
+      jcr:uuid: 75047b7c-d676-4eb4-891a-9b36184c9431
+      /hipposysedit:nodetype:
+        jcr:primaryType: hippo:handle
+        jcr:mixinTypes: ['mix:referenceable']
+        jcr:uuid: 731997c7-ede2-4120-abb9-f03897e9927f
+        /hipposysedit:nodetype:
+          jcr:primaryType: hipposysedit:nodetype
+          jcr:mixinTypes: ['hipposysedit:remodel']
+          hipposysedit:supertype: ['hippo:document', 'hippostdpubwf:document', 'hippostd:publishableSummary']
+          hipposysedit:uri: http://www.visitscotland.com/traveltrade/nt/1.0
+      /hipposysedit:prototypes:
+        jcr:primaryType: hipposysedit:prototypeset
+        /hipposysedit:prototype:
+          jcr:primaryType: traveltrade:basedocument
+          jcr:mixinTypes: ['mix:referenceable']
+          jcr:uuid: bd8d12c1-f323-4060-a31c-b4c2548d8c0e
+          hippostd:state: draft
+          hippostdpubwf:createdBy: ''
+          hippostdpubwf:creationDate: 2026-11-05T17:56:39.931Z
+          hippostdpubwf:lastModificationDate: 2026-11-05T17:56:39.931Z
+          hippostdpubwf:lastModifiedBy: ''

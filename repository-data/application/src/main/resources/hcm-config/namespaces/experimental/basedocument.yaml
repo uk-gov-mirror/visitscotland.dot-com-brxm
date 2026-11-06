@@ -1,0 +1,26 @@
+definitions:
+  config:
+    /hippo:namespaces/experimental/basedocument:
+      jcr:primaryType: hipposysedit:templatetype
+      jcr:mixinTypes: ['mix:referenceable']
+      jcr:uuid: 8306712e-305c-42fc-b7c9-68974317ca39
+      /hipposysedit:nodetype:
+        jcr:primaryType: hippo:handle
+        jcr:mixinTypes: ['mix:referenceable']
+        jcr:uuid: 088ed585-63cf-47b0-8508-340c108fd118
+        /hipposysedit:nodetype:
+          jcr:primaryType: hipposysedit:nodetype
+          jcr:mixinTypes: ['hipposysedit:remodel']
+          hipposysedit:supertype: ['hippo:document', 'hippostdpubwf:document', 'hippostd:publishableSummary']
+          hipposysedit:uri: http://www.visitscotland.com/experimental/nt/1.0
+      /hipposysedit:prototypes:
+        jcr:primaryType: hipposysedit:prototypeset
+        /hipposysedit:prototype:
+          jcr:primaryType: experimental:basedocument
+          jcr:mixinTypes: ['mix:referenceable']
+          jcr:uuid: cc765963-a55d-4381-b556-c90d3dd4bcee
+          hippostd:state: draft
+          hippostdpubwf:createdBy: ''
+          hippostdpubwf:creationDate: 2026-11-05T18:14:43.026Z
+          hippostdpubwf:lastModificationDate: 2026-11-05T18:14:43.026Z
+          hippostdpubwf:lastModifiedBy: ''

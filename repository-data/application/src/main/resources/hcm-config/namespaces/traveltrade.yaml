@@ -1,0 +1,6 @@
+definitions:
+  config:
+    /hippo:namespaces/traveltrade:
+      jcr:primaryType: hipposysedit:namespace
+      jcr:mixinTypes: ['mix:referenceable']
+      jcr:uuid: bc55be29-5ccc-4cb4-a75e-38eff053fe17

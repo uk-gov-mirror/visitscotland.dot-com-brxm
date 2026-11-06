@@ -3,3 +3,9 @@ definitions:
     visitscotland:
       uri: http://www.visitscotland.com/visitscotland/nt/1.0
       cnd: namespaces/visitscotland.cnd
+    traveltrade:
+      uri: http://www.visitscotland.com/traveltrade/nt/1.0
+      cnd: namespaces/traveltrade.cnd
+    experimental:
+      uri: http://www.visitscotland.com/experimental/nt/1.0
+      cnd: namespaces/experimental.cnd
