@@ -7,9 +7,6 @@
 [traveltrade:basedocument] > hippo:document, hippostd:publishableSummary, hippostdpubwf:document
   orderable
 
-[traveltrade:Jose] > hippostd:relaxed, hippotranslation:translated, traveltrade:basedocument
-  orderable
-
 [traveltrade:Page] > hippostd:relaxed, hippotranslation:translated, traveltrade:basedocument
   orderable
 
