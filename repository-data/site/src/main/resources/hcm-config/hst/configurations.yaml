@@ -45,4 +45,4 @@ definitions:
         hst:inheritsfrom: [../common]
       /travel-trade:
         jcr:primaryType: hst:configuration
-        hst:inheritsfrom: [../vs-default, '../vs-default/hst:workspace']
+        hst:inheritsfrom: [../common]
