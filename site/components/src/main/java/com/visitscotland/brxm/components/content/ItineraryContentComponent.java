@@ -11,14 +11,11 @@ import org.hippoecm.hst.core.component.HstRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 public class ItineraryContentComponent extends PageContentComponent<Itinerary> {
 
     private static final Logger logger = LoggerFactory.getLogger(ItineraryContentComponent.class);
 
-    public static final String ITINERARY = "itinerary";
     public static final String ITINERARY_BUNDLE = "itinerary";
-    public static final String PAGE_INTRO = "pageIntro";
     public static final String PAGE_TEMPLATE = "pageTemplate";
     public static final String HAS_STOPS = "hasStops";
 
@@ -43,18 +40,10 @@ public class ItineraryContentComponent extends PageContentComponent<Itinerary> {
     public void addPageAttributes(PageCompositionHelper pageConfig) {
         HstRequest request = pageConfig.getRequest();
         includeLabels(pageConfig);
-        if (itineraryMapper.isStopBasedItinerary(getDocument(request))){
-            logger.warn("Stop based itineraries are no longer in use." + getDocument(request));
-            // TODO - will be removed at a later date
-            pageConfig.addProperty(HAS_STOPS, true);
-        } else {
-            pageConfig.addProperty(HAS_STOPS, false);
-            ItineraryPage itinerary = itineraryMapper.buildItinerary(getDocument(request), request.getLocale());
-            // TODO - review and remove?
-            request.setModel(PAGE_INTRO, itinerary);
-            request.setModel(PAGE_TEMPLATE, itinerary);
-            builder.addModules(request, pageConfig);
-        }
+        pageConfig.addProperty(HAS_STOPS, false);
+        ItineraryPage itinerary = itineraryMapper.buildItinerary(getDocument(request), request.getLocale());
+        request.setModel(PAGE_TEMPLATE, itinerary);
+        builder.addModules(request, pageConfig);
     }
 
     /**
