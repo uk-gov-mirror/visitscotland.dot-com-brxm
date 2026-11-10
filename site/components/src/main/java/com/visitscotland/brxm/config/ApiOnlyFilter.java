@@ -13,13 +13,12 @@ public class ApiOnlyFilter implements Filter {
     private static final Logger logger = LoggerFactory.getLogger(ApiOnlyFilter.class);
 
     private static final String[] ALLOW_LIST = new String[]{
-            "/resourceapi/",
-            "/bsh-api/resourceapi/",
-            "/be-api/resourceapi/",
             "/api/",
             "/icons/",
             "/binaries/"
     };
+
+    private static final String RESOURCEAPI = "/resourceapi/";
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
@@ -42,6 +41,9 @@ public class ApiOnlyFilter implements Filter {
 
 
     private boolean isAllowed(String path) {
+        if (path.contains(RESOURCEAPI)){
+            return true;
+        }
         for (String allow : ALLOW_LIST) {
             if (path.startsWith(allow)) {
                 return true;
