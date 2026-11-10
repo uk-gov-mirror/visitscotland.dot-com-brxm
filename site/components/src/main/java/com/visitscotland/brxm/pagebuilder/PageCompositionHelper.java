@@ -3,6 +3,7 @@ package com.visitscotland.brxm.pagebuilder;
 import com.visitscotland.brxm.components.content.PageContentComponent;
 import com.visitscotland.brxm.hippobeans.Page;
 import com.visitscotland.brxm.model.Module;
+import com.visitscotland.brxm.model.megalinks.EnhancedLink;
 import com.visitscotland.brxm.pagebuilder.model.PageTemplate;
 import com.visitscotland.brxm.pagebuilder.page.PageTemplateAssembler;
 import com.visitscotland.brxm.services.ResourceBundleService;
@@ -235,6 +236,11 @@ public class PageCompositionHelper {
 
     public boolean isEditMode() {
         return Boolean.TRUE.equals(request.getAttribute(PageContentComponent.EDIT_MODE));
+    }
+
+    public void addVideoSchema(EnhancedLink link) {
+        //TODO Implement
+        logger.error("The video schema hasn't been defined");
     }
 
 }
