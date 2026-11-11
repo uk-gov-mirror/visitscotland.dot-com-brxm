@@ -5,7 +5,7 @@ package com.visitscotland.brxm.components;
 // (powered by Fernflower decompiler)
 //
 
-import net.sf.json.JSONObject;
+import org.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
 import org.onehippo.forge.exdocpicker.api.ExternalDocumentCollection;
 import org.onehippo.forge.exdocpicker.api.ExternalDocumentServiceContext;
@@ -30,13 +30,13 @@ public class DMSAwardPicker extends AbstractDMSPicker {
     }
 
     @Override
-    public ExternalDocumentCollection<JSONObject> searchExternalDocuments(ExternalDocumentServiceContext context, String queryString) {
+    public ExternalDocumentCollection<DocumentObject> searchExternalDocuments(ExternalDocumentServiceContext context, String queryString) {
 
-        ExternalDocumentCollection<JSONObject> docCollection = new SimpleExternalDocumentCollection<JSONObject>();
-        for (int i = 0; i < getDocArray().size(); i++) {
+        ExternalDocumentCollection<DocumentObject> docCollection = new SimpleExternalDocumentCollection<>();
+        for (int i = 0; i < getDocArray().length(); i++) {
             JSONObject doc = getDocArray().getJSONObject(i);
             if (StringUtils.contains(doc.getString("name").toLowerCase(), Objects.toString(queryString, "").toLowerCase())) {
-                docCollection.add(doc);
+                docCollection.add((DocumentObject) doc);
             }
         }
 

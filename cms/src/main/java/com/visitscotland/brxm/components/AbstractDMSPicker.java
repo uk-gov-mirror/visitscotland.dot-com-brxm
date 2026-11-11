@@ -1,14 +1,11 @@
 package com.visitscotland.brxm.components;
 
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.visitscotland.brxm.config.VsComponentManager;
 import com.visitscotland.brxm.dms.DMSConstants;
 import com.visitscotland.brxm.dms.DMSProxy;
-import com.visitscotland.brxm.dms.model.DataType;
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
 import org.hippoecm.repository.HippoStdNodeType;
 import org.onehippo.forge.exdocpicker.api.ExternalDocumentCollection;
@@ -21,11 +18,10 @@ import org.slf4j.LoggerFactory;
 import javax.jcr.Node;
 import javax.jcr.RepositoryException;
 import javax.jcr.Value;
-import java.io.IOException;
 import java.util.*;
 
 //TODO Make this testable
-public abstract class AbstractDMSPicker implements ExternalDocumentServiceFacade<JSONObject> {
+public abstract class AbstractDMSPicker implements ExternalDocumentServiceFacade<DocumentObject> {
 
     private static Logger log = LoggerFactory.getLogger(AbstractDMSPicker.class);
 
@@ -39,8 +35,8 @@ public abstract class AbstractDMSPicker implements ExternalDocumentServiceFacade
         try {
             dmsProxy = VsComponentManager.get(DMSProxy.class);
             docArray = new JSONArray();
-            docArray.addAll(JSONArray.fromObject(deserialize(
-                    request(type,null, productTypesForPSR(type)))));
+            docArray.putAll(deserialize(
+                    request(type,null, productTypesForPSR(type))));
 
         } catch (Exception e) {
             log.error("Failed to load JSON data.", e);
@@ -48,7 +44,7 @@ public abstract class AbstractDMSPicker implements ExternalDocumentServiceFacade
     }
 
     @Override
-    public void setFieldExternalDocuments(ExternalDocumentServiceContext context, ExternalDocumentCollection<JSONObject> exdocs) {
+    public void setFieldExternalDocuments(ExternalDocumentServiceContext context, ExternalDocumentCollection<DocumentObject> exdocs) {
         final String fieldName = context.getPluginConfig().getString(PARAM_EXTERNAL_DOCS_FIELD_NAME);
 
         if (StringUtils.isBlank(fieldName)) {
@@ -75,7 +71,7 @@ public abstract class AbstractDMSPicker implements ExternalDocumentServiceFacade
         }
     }
 
-    public ExternalDocumentCollection<JSONObject> getFieldExternalDocuments(ExternalDocumentServiceContext context) {
+    public ExternalDocumentCollection<DocumentObject> getFieldExternalDocuments(ExternalDocumentServiceContext context) {
         final String fieldName = context.getPluginConfig().getString(PARAM_EXTERNAL_DOCS_FIELD_NAME);
 
         if (StringUtils.isBlank(fieldName)) {
@@ -83,7 +79,7 @@ public abstract class AbstractDMSPicker implements ExternalDocumentServiceFacade
                     + PARAM_EXTERNAL_DOCS_FIELD_NAME + "': " + fieldName);
         }
 
-        ExternalDocumentCollection<JSONObject> docCollection = new SimpleExternalDocumentCollection<>();
+        ExternalDocumentCollection<DocumentObject> docCollection = new SimpleExternalDocumentCollection<>();
 
         try {
             final Node contextNode = context.getContextModel().getNode();
@@ -93,7 +89,7 @@ public abstract class AbstractDMSPicker implements ExternalDocumentServiceFacade
 
                 for (Value value : values) {
                     String id = value.getString();
-                    JSONObject doc = findDocumentById(id);
+                    DocumentObject doc = findDocumentById(id);
 
                     if (doc != null) {
                         docCollection.add(doc);
@@ -109,7 +105,7 @@ public abstract class AbstractDMSPicker implements ExternalDocumentServiceFacade
 
 
     @Override
-    public String getDocumentTitle(ExternalDocumentServiceContext context, JSONObject doc, Locale preferredLocale) {
+    public String getDocumentTitle(ExternalDocumentServiceContext context, DocumentObject doc, Locale preferredLocale) {
         if (doc != null && doc.has("id")) {
             return doc.getString("id");
         }
@@ -117,7 +113,7 @@ public abstract class AbstractDMSPicker implements ExternalDocumentServiceFacade
         return "";
     }
     @Override
-    public String getDocumentDescription(ExternalDocumentServiceContext context, JSONObject doc, Locale preferredLocale) {
+    public String getDocumentDescription(ExternalDocumentServiceContext context, DocumentObject doc, Locale preferredLocale) {
         if (doc != null && doc.has("name")) {
             return doc.getString("name");
         }
@@ -126,7 +122,7 @@ public abstract class AbstractDMSPicker implements ExternalDocumentServiceFacade
     }
 
     @Override
-    public String getDocumentIconLink(ExternalDocumentServiceContext context, JSONObject doc, Locale preferredLocale) {
+    public String getDocumentIconLink(ExternalDocumentServiceContext context, DocumentObject doc, Locale preferredLocale) {
         return "";
     }
 
@@ -136,12 +132,12 @@ public abstract class AbstractDMSPicker implements ExternalDocumentServiceFacade
      * @param id
      * @return
      */
-    protected JSONObject findDocumentById(final String id) {
-        for (int i = 0; i < docArray.size(); i++) {
+    protected DocumentObject findDocumentById(final String id) {
+        for (int i = 0; i < docArray.length(); i++) {
             JSONObject doc = docArray.getJSONObject(i);
 
             if (StringUtils.equals(id, doc.getString("id"))) {
-                return doc;
+                return (DocumentObject) doc;
             }
         }
 
@@ -188,16 +184,21 @@ public abstract class AbstractDMSPicker implements ExternalDocumentServiceFacade
         return dmsProxy.request(String.format(DMSConstants.META_PRODUCT_LIST,productType, parameters), locale);
     }
 
+    protected JSONArray deserialize(String data) {
+        JSONArray parsedArray = new JSONArray(data);
+        JSONArray docArray = new JSONArray();
 
-    protected static List<DataType> deserialize(String data) throws IOException {
-        ObjectMapper jsonMapper = new ObjectMapper();
-        JsonNode dataObject = jsonMapper.readTree(data);
-        List<DataType> dataTypes = new ArrayList<>();
-        for (JsonNode elm: dataObject.get("data")){
-            DataType dataType = new DataType(elm.get("id").asText(),elm.get("name").asText());
-            dataTypes.add(dataType);
+        for (int i = 0; i < parsedArray.length(); i++) {
+            JSONObject jsonObject = parsedArray.getJSONObject(i);
+
+            DocumentObject documentObject = new DocumentObject();
+            for (String key : jsonObject.keySet()) {
+                documentObject.put(key, jsonObject.get(key));
+            }
+
+            docArray.put(documentObject);
         }
-        return dataTypes;
+        return docArray;
     }
 
     protected JSONArray getDocArray() {
