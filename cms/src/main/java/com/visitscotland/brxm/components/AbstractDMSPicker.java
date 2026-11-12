@@ -4,9 +4,9 @@ package com.visitscotland.brxm.components;
 import com.visitscotland.brxm.config.VsComponentManager;
 import com.visitscotland.brxm.dms.DMSConstants;
 import com.visitscotland.brxm.dms.DMSProxy;
+import com.visitscotland.utils.Contract;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.apache.commons.lang.StringUtils;
 import org.hippoecm.repository.HippoStdNodeType;
 import org.onehippo.forge.exdocpicker.api.ExternalDocumentCollection;
 import org.onehippo.forge.exdocpicker.api.ExternalDocumentServiceContext;
@@ -47,7 +47,7 @@ public abstract class AbstractDMSPicker implements ExternalDocumentServiceFacade
     public void setFieldExternalDocuments(ExternalDocumentServiceContext context, ExternalDocumentCollection<DocumentObject> exdocs) {
         final String fieldName = context.getPluginConfig().getString(PARAM_EXTERNAL_DOCS_FIELD_NAME);
 
-        if (StringUtils.isBlank(fieldName)) {
+        if (Contract.isEmpty(fieldName)) {
             throw new IllegalArgumentException("Invalid plugin configuration parameter for '"
                     + PARAM_EXTERNAL_DOCS_FIELD_NAME + "': " + fieldName);
         }
@@ -74,7 +74,7 @@ public abstract class AbstractDMSPicker implements ExternalDocumentServiceFacade
     public ExternalDocumentCollection<DocumentObject> getFieldExternalDocuments(ExternalDocumentServiceContext context) {
         final String fieldName = context.getPluginConfig().getString(PARAM_EXTERNAL_DOCS_FIELD_NAME);
 
-        if (StringUtils.isBlank(fieldName)) {
+        if (Contract.isEmpty(fieldName)) {
             throw new IllegalArgumentException("Invalid plugin configuration parameter for '"
                     + PARAM_EXTERNAL_DOCS_FIELD_NAME + "': " + fieldName);
         }
@@ -136,7 +136,7 @@ public abstract class AbstractDMSPicker implements ExternalDocumentServiceFacade
         for (int i = 0; i < docArray.length(); i++) {
             JSONObject doc = docArray.getJSONObject(i);
 
-            if (StringUtils.equals(id, doc.getString("id"))) {
+            if (id != null && id.equals(doc.getString("id"))) {
                 return (DocumentObject) doc;
             }
         }

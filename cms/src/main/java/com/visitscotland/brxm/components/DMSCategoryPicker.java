@@ -7,7 +7,6 @@ package com.visitscotland.brxm.components;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.apache.commons.lang.StringUtils;
 import org.onehippo.forge.exdocpicker.api.ExternalDocumentCollection;
 import org.onehippo.forge.exdocpicker.api.ExternalDocumentServiceContext;
 import org.onehippo.forge.exdocpicker.impl.SimpleExternalDocumentCollection;
@@ -15,9 +14,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.jcr.RepositoryException;
-import java.io.IOException;
 import java.util.*;
 
+@Deprecated
 public class DMSCategoryPicker extends AbstractDMSPicker{
 
     /**
@@ -54,7 +53,7 @@ public class DMSCategoryPicker extends AbstractDMSPicker{
         ExternalDocumentCollection<DocumentObject> docCollection =new SimpleExternalDocumentCollection<>();
         for (int i = 0; i < getDocArray().length(); i++) {
             JSONObject doc = getDocArray().getJSONObject(i);
-            if (StringUtils.contains(doc.getString("name").toLowerCase(), Objects.toString(queryString, "").toLowerCase())) {
+            if (doc.getString("name").toLowerCase().contains(Objects.toString(queryString, "").toLowerCase())) {
                 docCollection.add((DocumentObject) doc);
             }
         }
