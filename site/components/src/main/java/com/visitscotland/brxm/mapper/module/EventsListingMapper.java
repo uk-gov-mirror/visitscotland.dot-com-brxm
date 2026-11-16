@@ -188,17 +188,11 @@ public class EventsListingMapper extends ModuleMapper<EventsListing, EventsLings
      */
     private EventFilter buildMultiselectField(String key, String labelKey, String valueList, int group) {
         EventFilter filter = new EventFilter(key, getLabel(labelKey), EventFilter.Type.MULTISELECT, group);
-        Map<String, String> list = hippoUtilsService.getValueMap(valueList);
 
-        try {
-            List<EventValueOption> values = hippoUtilsService.getValueMap(valueList).entrySet().stream()
-                    .map(e -> new EventValueOption(e.getKey(), e.getValue()))
-                    .collect(Collectors.toList());
-            filter.setValues(values);
-        } catch (Exception e) {
-            log.info("Unable to parse value list for key: " + key + " and value list: " + valueList, e);
-        }
-
+        List<EventValueOption> values = hippoUtilsService.getValueMap(valueList).entrySet().stream()
+                .map(e -> new EventValueOption(e.getKey(), e.getValue()))
+                .collect(Collectors.toList());
+        filter.setValues(values);
 
         return filter;
     }
